@@ -1,5 +1,5 @@
 from collections import UserDict
-from datetime import datetime
+from datetime import datetime, timedelta
 # from colorama import Fore
 
 #  5. Адресна книга: зберігає всі записи
@@ -23,18 +23,36 @@ class AddressBook(UserDict):
         return "\n".join(str(record) for record in self.data.values())    
     
     
-    def get_upcoming_birthdays(self):
-        today = datetime.today()
-        upcoming = []
+    # Функція перенесення поздоровлень з вихідних 
+    def adjust_for_weekend(self, date):
+        if date.weekday() == 5:  # Суббота
+            return date + timedelta(days=2)
+        elif date.weekday() == 6:  # Воскресенье
+            return date + timedelta(days=1)
+        return date
+    
+    # Метод для отримання майбутніх привітань    
+    def get_upcoming_birthdays(self, days=7):
+        today = datetime.today().date()
+        upcoming_birthdays = []
+        
         for record in self.data.values():
             if record.birthday:
-                bday = datetime.strptime(record.birthday.value, "%d.%m.%Y")
-                bday_this_year = bday.replace(year=today.year)
-                delta = (bday_this_year - today).days
-                if 0 <= delta < 7:
-                    upcoming.append(record)
-        return upcoming        
-    
+                birthday_date = datetime.strptime(record.birthday.value, "%d.%m.%Y").date()
+                birthday_this_year = birthday_date.replace(year=today.year)
+                
+                # Якщо день народження вже пройшов цього року, то переносимо на наступний
+                
+                if birthday_this_year < today:
+                    birthday_this_year = birthday_this_year.replace(year=today.year + 1)
+                    
+                # Переносимо вітання з вихідних
+                
+                congrat_date = self.adjust_for_weekend(birthday_this_year)
+                day_diff = (congrat_date - today).days
+                if 0 <= day_diff <= days:
+                    upcoming_birthdays.append((record.name.value, congrat_date))
+        return upcoming_birthdays
     
     def __str__(self):
         return "\n".join(str(record) for record in self.data.values())

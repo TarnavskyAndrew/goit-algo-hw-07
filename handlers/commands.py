@@ -64,5 +64,5 @@ def show_birthday(args, book):
 def birthdays(args, book):
     upcoming = book.get_upcoming_birthdays()
     if upcoming:
-        return "\n".join([f"{rec.name.value}: {rec.birthday.value}" for rec in upcoming])
+        return "\n".join([f"{name} — Greetings: {date.strftime('%d.%m.%Y')}" for name, date in upcoming])
     return "No upcoming birthdays."

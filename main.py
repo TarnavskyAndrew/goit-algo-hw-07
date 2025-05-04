@@ -53,7 +53,7 @@ def main():
         elif command == "phone":                # phone [ім'я] — щоб показати всі номери телефону для вказаного контакту.
             print(show_phone(args, book))
 
-        elif command == "all":                  # all — показати всі контакти з номерами та датами народження (якщо є).
+        elif command == "all":                  # all — показати всі контакти з номерами та датами привітання (якщо є).
             print(show_all_contacts(book))
     
         elif command == "add-birthday":         # add-birthday [ім'я] [DD.MM.YYYY] – додати дату народження до контакту.
@@ -62,7 +62,7 @@ def main():
         elif command == "show-birthday":        # show-birthday [ім'я] – показати дату народження вказаного контакту.
             print(show_birthday(args, book))
 
-        elif command == "birthdays":            # birthdays - показати список контактів, у яких день народження в найближчі 7 днів.
+        elif command == "birthdays":            # birthdays - показати список контактів, яких потрібно привітати по днях на наступному тижні.
             print(birthdays(args, book))          
 
                     
